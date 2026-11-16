@@ -1,0 +1,50 @@
+# ==============================================================================
+# Application Configuration (config/app_config.yaml) — WololoRAG-MCP
+# Must use the same embedding provider + databases as the Indexer service.
+# ==============================================================================
+
+embedding:
+  # Must match the provider used by the Indexer ("local" or "mistral").
+  provider: "local"
+
+  local:
+    model_name: "sentence-transformers/all-MiniLM-L6-v2"
+    device: "cpu"
+
+  mistral:
+    api_key: ""
+    model_name: "mistral-embed"
+    timeout_sec: 30
+    max_retries: 3
+
+database:
+  # Full SQLAlchemy URL (e.g. "postgresql+psycopg://wololo:wololo_pass@localhost:5432/wololo_rag").
+  # Leave empty ("") to fall back to `sqlite_path`, OR override via DATABASE_URL in `.env`!
+  database_url: ""
+
+  # Default fallback points to the sibling Indexer repository's local SQLite file.
+  sqlite_path: "../WololoRAG/data/wololo_state.db"
+
+  # Qdrant mode:
+  # - "local": reads local Qdrant storage from `qdrant_local_path`.
+  # - "server": connects to Qdrant from `WololoRAG-Infra` on localhost:6333.
+  qdrant_mode: "local"
+  qdrant_local_path: "../WololoRAG/data/qdrant"
+  qdrant_url: "http://localhost:6333"
+
+  collection_prefix: "wololo_articles"
+
+mcp_server:
+  host: "0.0.0.0"
+  port: 8080
+  # Transport mode:
+  # - "streamable-http": modern MCP HTTP endpoint at /mcp (recommended for Antigravity)
+  # - "sse": legacy HTTP+SSE endpoint at /sse
+  # - "stdio": local pipe transport
+  transport: "streamable-http"
+
+  auth:
+    # Disabled by default for local learning; flip to true if exposing via tunnel.
+    enabled: false
+    api_key_header: "X-MCP-Key"
+    secret_token: "dev-mcp-secret-token"

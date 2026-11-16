@@ -1,0 +1,25 @@
+# ==============================================================================
+# Vector Search Configuration (config/vector_config.yaml) — WololoRAG-MCP
+# Controls how user queries match, rank, deduplicate, and format stored chunks.
+# ==============================================================================
+
+search:
+  # Default number of unique results to return for a semantic query.
+  top_k: 5
+
+  # Minimum blended similarity score (0.0 to 1.0) required to include a hit.
+  score_threshold: 0.25
+
+  # Distance metric matching the collection created by the Indexer.
+  distance_metric: "Cosine"
+
+  # Deduplication limit per article: ensures top_k returns diverse articles.
+  max_chunks_per_article: 1
+
+  # Hybrid keyword boost (0.0 = pure vector similarity, 0.2 = 80% vector + 20% lexical).
+  hybrid_keyword_weight: 0.2
+
+  # Retrieval output mode:
+  # - "best_chunk":   returns the highest-scoring chunk per article.
+  # - "full_article": Parent-Document Retrieval — returns full article text from SQL.
+  context_mode: "best_chunk"

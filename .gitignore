@@ -1,0 +1,17 @@
+# ==============================================================================
+# WololoRAG-MCP .gitignore
+# ==============================================================================
+
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.env
+.env.local
+data/
+.DS_Store
+.vscode/
+.idea/

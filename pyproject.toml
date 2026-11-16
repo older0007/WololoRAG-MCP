@@ -1,0 +1,59 @@
+# ==============================================================================
+# pyproject.toml — WololoRAG-MCP (Standalone MCP Search Microservice)
+# Notice this repo has NO web scraper and NO text chunker.
+# ==============================================================================
+
+[project]
+name = "wololo-rag-mcp"
+version = "0.1.0"
+description = "Standalone MCP Read/Search microservice exposing WololoRAG Qdrant + SQL knowledge to LLMs (Antigravity, Claude, Gemini)."
+readme = "README.md"
+requires-python = ">=3.11"
+
+dependencies = [
+    # --- Configuration & Strict Typing ---
+    "pydantic>=2.7.0",
+    "pydantic-settings>=2.2.0",
+    "pyyaml>=6.0.1",
+    "python-dotenv>=1.0.1",
+
+    # --- Relational DB Read Layer (PostgreSQL + SQLite) ---
+    "sqlalchemy>=2.0.30",
+    "psycopg[binary]>=3.1.0",
+
+    # --- LangChain Embeddings & LangGraph Retrieval Graph ---
+    "langchain-core>=0.3.0",
+    "langchain-huggingface>=0.1.0",
+    "langchain-mistralai>=0.2.0",
+    "sentence-transformers>=3.0.0",
+    "langgraph>=0.2.0",
+
+    # --- Vector Database Client ---
+    "qdrant-client>=1.11.0",
+
+    # --- MCP Server + Starlette Auth Middleware ---
+    "mcp>=2.0.0",
+    "starlette>=0.38.0",
+    "uvicorn>=0.30.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.2.0",
+    "httpx>=0.27.0",
+]
+
+[project.scripts]
+wololo-mcp = "src.mcp_server.server:main"
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
